@@ -26,7 +26,7 @@ public class SmartYamlConfiguration extends YamlConfiguration implements SmartCo
     private File file;
 
     /**
-     * Instantiates a new IvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to and
+     * Instantiates a new SmartYamlConfiguration with a selected {@link java.io.File} to load/save from/to and
      * automatically loads the file.
      *
      * @param file file to load/save from/to
@@ -37,7 +37,7 @@ public class SmartYamlConfiguration extends YamlConfiguration implements SmartCo
 
 
     /**
-     * Instantiates a new IvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to and
+     * Instantiates a new SmartYamlConfiguration with a selected {@link java.io.File} to load/save from/to and
      * automatically loads the file.
      *
      * @param file      file to load/save from/to
@@ -87,6 +87,5 @@ public class SmartYamlConfiguration extends YamlConfiguration implements SmartCo
     public String getFileName() {
         return file != null ? file.getName() : "";
     }
-
 
 }

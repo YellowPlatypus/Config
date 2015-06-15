@@ -30,7 +30,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.File} to check against, and an {@link me.topplethenun.spoils.common.configuration.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.File} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param checkAgainst file to check against
@@ -43,7 +43,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.File} to check against, and an {@link me.topplethenun.spoils.common.configuration.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.File} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param separator    character to separate file sections on
@@ -61,7 +61,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.InputStream} to check against, and an {@link me.topplethenun.spoils.common.configuration.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.InputStream} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param checkAgainst resource to check against
@@ -74,7 +74,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.InputStream} to check against, and an {@link me.topplethenun.spoils.common.configuration.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.InputStream} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param separator    character to separate file sections on
@@ -170,6 +170,9 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
                 } catch (IOException e) {
                     return false;
                 }
+                for (String key : getKeys(true)) {
+                    set(key, null);
+                }
                 for (String key : checkAgainst.getKeys(true)) {
                     if (checkAgainst.isConfigurationSection(key)) {
                         continue;
@@ -178,6 +181,8 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
                 }
                 set("version", getVersion());
                 save();
+                return true;
+            case NOTHING:
                 return true;
             default:
                 return true;

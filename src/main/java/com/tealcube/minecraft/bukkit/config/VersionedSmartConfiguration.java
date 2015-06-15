@@ -24,7 +24,7 @@ public interface VersionedSmartConfiguration extends SmartConfiguration {
 
     boolean update();
 
-    public static enum VersionUpdateType {
+    enum VersionUpdateType {
         BACKUP_NO_UPDATE, BACKUP_AND_UPDATE, BACKUP_AND_NEW, NOTHING
     }
 

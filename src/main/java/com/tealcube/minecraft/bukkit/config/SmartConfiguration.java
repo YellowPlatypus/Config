@@ -14,9 +14,11 @@
  */
 package com.tealcube.minecraft.bukkit.config;
 
+import org.bukkit.configuration.Configuration;
+
 import java.io.File;
 
-public interface SmartConfiguration {
+public interface SmartConfiguration extends Configuration {
 
     void load();
 
