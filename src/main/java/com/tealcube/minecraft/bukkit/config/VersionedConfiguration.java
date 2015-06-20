@@ -14,7 +14,7 @@
  */
 package com.tealcube.minecraft.bukkit.config;
 
-public interface VersionedSmartConfiguration extends SmartConfiguration {
+public interface VersionedConfiguration {
 
     String getVersion();
 

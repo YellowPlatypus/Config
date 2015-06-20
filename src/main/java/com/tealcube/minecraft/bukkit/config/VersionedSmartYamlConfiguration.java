@@ -14,6 +14,7 @@
  */
 package com.tealcube.minecraft.bukkit.config;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -21,16 +22,18 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * An extension of IvoryYamlConfiguration that can backup and update itself.
+ * An extension of SmartYamlConfiguration that can backup and update itself.
  */
-public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration implements VersionedSmartConfiguration {
+public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration implements VersionedConfiguration {
 
-    private YamlConfiguration checkAgainst;
+    private static final String YAML_ENDING = ".yml";
+    private static final String BACKUP_ENDING = ".backup";
+    private Configuration checkAgainst;
     private VersionUpdateType updateType;
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.File} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.File} to check against, and an {@link VersionedConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param checkAgainst file to check against
@@ -43,7 +46,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.File} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.File} to check against, and an {@link VersionedConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param separator    character to separate file sections on
@@ -61,7 +64,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.InputStream} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.InputStream} to check against, and an {@link VersionedConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param checkAgainst resource to check against
@@ -74,7 +77,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
 
     /**
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
-     * {@link java.io.InputStream} to check against, and an {@link com.tealcube.minecraft.bukkit.config.VersionedSmartConfiguration.VersionUpdateType}.
+     * {@link java.io.InputStream} to check against, and an {@link VersionedConfiguration.VersionUpdateType}.
      *
      * @param file         file to load/save from/to
      * @param separator    character to separate file sections on
@@ -86,6 +89,15 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
         super(file, separator);
         if (checkAgainst != null) {
             this.checkAgainst = YamlConfiguration.loadConfiguration(checkAgainst);
+        }
+        this.updateType = updateType;
+    }
+
+    public VersionedSmartYamlConfiguration(Configuration configuration, Configuration checkAgainst,
+                                           VersionUpdateType updateType) {
+        super(configuration);
+        if (checkAgainst != null) {
+            this.checkAgainst = checkAgainst;
         }
         this.updateType = updateType;
     }
@@ -132,7 +144,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
             return false;
         }
         File directory = getFile().getParentFile();
-        File saveTo = new File(directory, getFile().getName().replace(".yml", ".yml.backup"));
+        File saveTo = new File(directory, getFile().getName().replace(YAML_ENDING, YAML_ENDING + BACKUP_ENDING));
         switch (updateType) {
             case BACKUP_NO_UPDATE:
                 try {

@@ -30,18 +30,19 @@ public final class MasterConfiguration {
         settingMap = new ConcurrentHashMap<>();
     }
 
-    public static MasterConfiguration loadFromFiles(SmartYamlConfiguration... yamlConfigurations) {
+    public static MasterConfiguration loadFromFiles(SmartConfiguration... configurations) {
         MasterConfiguration masterConfiguration = new MasterConfiguration();
-        masterConfiguration.load(yamlConfigurations);
+        masterConfiguration.load(configurations);
         return masterConfiguration;
     }
 
-    public void load(SmartYamlConfiguration... yamlConfigurations) {
-        if (yamlConfigurations == null) {
+    public void load(SmartConfiguration... configurations) {
+        if (configurations == null) {
             return;
         }
-        for (SmartYamlConfiguration yc : yamlConfigurations) {
-            String name = yc.getFileName().replace(".yml", "");
+        for (SmartConfiguration yc : configurations) {
+            String ending = yc.getFileName().substring(yc.getFileName().lastIndexOf("."));
+            String name = yc.getFileName().replace(ending, "");
             for (String key : yc.getKeys(true)) {
                 if (yc.isConfigurationSection(key)) {
                     continue;
