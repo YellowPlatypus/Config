@@ -65,7 +65,11 @@ public class SmartYamlConfiguration extends YamlConfiguration implements SmartCo
         super();
         this.file = null;
         options().pathSeparator(configuration.options().pathSeparator());
-        load();
+    }
+
+    public SmartYamlConfiguration() {
+        super();
+        this.file = null;
     }
 
     /**
