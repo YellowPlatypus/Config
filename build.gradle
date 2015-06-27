@@ -12,6 +12,8 @@ scmVersion {
     tag {
         prefix = project.name
     }
+    createReleaseCommit true
+    //releaseCommitMessage { version, position -> }
 }
 
 group = "com.tealcube.minecraft.bukkit"
