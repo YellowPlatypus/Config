@@ -1,0 +1,60 @@
+project.apply {
+    plugin("maven-publish")
+}
+project.apply {
+    plugin("signing")
+}
+
+signing {
+    if (!project.version.endsWith("SNAPSHOT")) {
+        sign configurations.archives
+    }
+}
+
+publishing {
+    publications {
+        java(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            pom.withXml {
+                def rootNode = asNode()
+                rootNode.appendNode("name", project.name)
+                rootNode.appendNode("description", project.name + " " + project.version)
+                rootNode.appendNode("inceptionYear", "2015")
+
+                def orgNode = rootNode.appendNode("organization")
+                orgNode.appendNode("name", "Teal Cube Games")
+                orgNode.appendNode("url", "http://tealcube.com/")
+
+                def scmNode = rootNode.appendNode("scm")
+                scmNode.appendNode("connection", "scm:git:https://github.com/TealCube/" + project.name + ".git")
+                scmNode.appendNode("developerConnection", "scm:git:https://github.com/TealCube/" + project.name + ".git")
+                scmNode.appendNode("url", "https://github.com/TealCube/" + project.name)
+                scmNode.appendNode("tag", "HEAD")
+            }
+        }
+    }
+    repositories {
+        maven {
+            url getMavenPublishingRepo()
+            name "MavenCentral"
+            credentials {
+                username System.getenv("OSSRH_USERNAME") ?: OSSRH_USERNAME
+                password System.getenv("OSSRH_PASSWORD") ?: OSSRH_PASSWORD
+            }
+        }
+    }
+}
+
+def getMavenPublishingRepo() {
+    if (!project.version.endsWith('-SNAPSHOT')) {
+        return "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+    }
+    return "https://oss.sonatype.org/content/repositories/snapshots/"
+}
