@@ -52,7 +52,6 @@ license {
 }
 
 release {
-    useAutomaticVersion true
     failOnSnapshotDependencies false
     preCommitText = "[ci skip]"
 }
