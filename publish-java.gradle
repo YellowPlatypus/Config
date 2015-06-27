@@ -43,7 +43,7 @@ publishing {
     }
 }
 
-publish.dependsOn project.tasks.getByName("signArchives")
+publish.dependsOn signing
 
 def getMavenPublishingRepo() {
     if (!project.version.endsWith('-SNAPSHOT')) {
