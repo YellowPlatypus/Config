@@ -12,8 +12,8 @@ scmVersion {
     tag {
         prefix = project.name
     }
-    //createReleaseCommit true
-    //releaseCommitMessage { version, position -> "[ci skip] release version: " + version}
+    createReleaseCommit true
+    releaseCommitMessage { version, position -> "[ci skip] release version: " + version}
 }
 
 group = "com.tealcube.minecraft.bukkit"
@@ -21,10 +21,11 @@ version = scmVersion.version
 
 apply from: "publish-java.gradle"
 
+ext.isReleaseVersion = !project.version.endsWith("SNAPSHOT")
+
 signing {
-    if (!project.version.endsWith("SNAPSHOT")) {
-        sign configurations.archives
-    }
+    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+    sign configurations.archives
 }
 
 repositories {
