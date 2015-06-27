@@ -3,13 +3,13 @@ plugins {
     id "maven-publish"
     id "com.github.hierynomus.license" version "0.11.0"
     id "signing"
+    id "net.researchgate.release" version "2.1.2"
 }
 
 sourceCompatibility = 1.7
 
 group = "com.tealcube.minecraft.bukkit"
 archivesBaseName = "config"
-version = "1.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -49,6 +49,12 @@ license {
     mapping {
         java = 'SLASHSTAR_STYLE'
     }
+}
+
+release {
+    automaticVersioning true
+    failOnSnapshotDependencies false
+    preCommitText = "[ci skip]"
 }
 
 publishing {
