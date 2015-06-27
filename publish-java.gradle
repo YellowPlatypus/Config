@@ -52,6 +52,8 @@ publishing {
     }
 }
 
+publish.dependsOn signArchives
+
 def getMavenPublishingRepo() {
     if (!project.version.endsWith('-SNAPSHOT')) {
         return "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
