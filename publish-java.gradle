@@ -1,15 +1,6 @@
 project.apply {
     plugin("maven-publish")
 }
-project.apply {
-    plugin("signing")
-}
-
-signing {
-    if (!project.version.endsWith("SNAPSHOT")) {
-        sign configurations.archives
-    }
-}
 
 publishing {
     publications {
@@ -51,8 +42,6 @@ publishing {
         }
     }
 }
-
-publish.dependsOn signArchives
 
 def getMavenPublishingRepo() {
     if (!project.version.endsWith('-SNAPSHOT')) {
