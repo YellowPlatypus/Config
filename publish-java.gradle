@@ -1,51 +1,58 @@
 project.apply {
-    plugin("maven-publish")
+    plugin("maven")
+}
+project.apply {
+    plugin("signing")
 }
 
-publishing {
-    publications {
-        java(MavenPublication) {
-            from components.java
-            artifact sourcesJar {
-                classifier "sources"
-            }
+ext.isReleaseVersion = !project.version.endsWith("SNAPSHOT")
 
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-            pom.withXml {
-                def rootNode = asNode()
-                rootNode.appendNode("name", project.name)
-                rootNode.appendNode("description", project.name + " " + project.version)
-                rootNode.appendNode("inceptionYear", "2015")
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
 
-                def orgNode = rootNode.appendNode("organization")
-                orgNode.appendNode("name", "Teal Cube Games")
-                orgNode.appendNode("url", "http://tealcube.com/")
-
-                def scmNode = rootNode.appendNode("scm")
-                scmNode.appendNode("connection", "scm:git:https://github.com/TealCube/" + project.name + ".git")
-                scmNode.appendNode("developerConnection", "scm:git:https://github.com/TealCube/" + project.name + ".git")
-                scmNode.appendNode("url", "https://github.com/TealCube/" + project.name)
-                scmNode.appendNode("tag", "HEAD")
-            }
-        }
-    }
+uploadArchives {
     repositories {
-        maven {
-            url getMavenPublishingRepo()
-            name "MavenCentral"
-            credentials {
-                username System.getenv("OSSRH_USERNAME") ?: OSSRH_USERNAME
-                password System.getenv("OSSRH_PASSWORD") ?: OSSRH_PASSWORD
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: System.getenv("OSSRH_USERNAME") ?: OSSRH_USERNAME, password: System.getenv("OSSRH_PASSWORD") ?: OSSRH_PASSWORD)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: System.getenv("OSSRH_USERNAME") ?: OSSRH_USERNAME, password: System.getenv("OSSRH_PASSWORD") ?: OSSRH_PASSWORD)
+            }
+
+            pom.project {
+                name project.name
+                packaging "jar"
+                // optionally artifactId can be defined here
+                description project.name + " " + project.version
+                url "https://github.com/TealCube/" + project.name
+
+                scm {
+                    connection 'scm:git:https://github.com/TealCube/' + project.name + '.git'
+                    developerConnection 'scm:git:https://github.com/TealCube/' + project.name + '.git'
+                    url 'https://github.com/Nunnery/Gooey/'
+                }
+
+                licenses {
+                    license {
+                        name 'The ISC License'
+                        url 'http://opensource.org/licenses/ISC'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'ToppleTheNun'
+                        name 'Richard Harrah'
+                    }
+                }
             }
         }
     }
-}
-
-def getMavenPublishingRepo() {
-    if (!project.version.endsWith('-SNAPSHOT')) {
-        return "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-    }
-    return "https://oss.sonatype.org/content/repositories/snapshots/"
 }
