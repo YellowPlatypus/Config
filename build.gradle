@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "com.github.hierynomus.license" version "0.11.0"
+    id "signing"
 }
 
 sourceCompatibility = 1.7
@@ -21,6 +22,26 @@ dependencies {
     compile "org.bukkit:bukkit:1.8-R0.1-SNAPSHOT"
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    if (!project.version.endsWith("SNAPSHOT")) {
+        sign configurations.archives
+    }
+}
+
 license {
     header file('HEADER')
     ignoreFailures false
@@ -33,18 +54,47 @@ license {
 publishing {
     publications {
         java(MavenPublication) {
-            artifactId = "config"
             from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            pom.withXml {
+                def rootNode = asNode()
+                rootNode.appendNode("name", project.name)
+                rootNode.appendNode("description", project.name + " " + project.version)
+                rootNode.appendNode("inceptionYear", "2015")
+
+                def orgNode = rootNode.appendNode("organization")
+                orgNode.appendNode("name", "Teal Cube Games")
+                orgNode.appendNode("url", "http://tealcube.com/")
+
+                def scmNode = rootNode.appendNode("scm")
+                scmNode.appendNode("connection", "scm:git:https://github.com/TealCube/" + project.name + ".git")
+                scmNode.appendNode("developerConnection", "scm:git:https://github.com/TealCube/" + project.name + ".git")
+                scmNode.appendNode("url", "https://github.com/TealCube/" + project.name)
+                scmNode.appendNode("tag", "HEAD")
+            }
         }
     }
     repositories {
         maven {
-            url "http://tealcube.com/nexus/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}/"
-            name "TealCube"
+            url getMavenPublishingRepo()
+            name "MavenCentral"
             credentials {
-                username System.getenv("nexusUsername") ?: nexusUsername
-                password System.getenv("nexusPassword") ?: nexusPassword
+                username System.getenv("OSSRH_USERNAME") ?: OSSRH_USERNAME
+                password System.getenv("OSSRH_PASSWORD") ?: OSSRH_PASSWORD
             }
         }
     }
+}
+
+def getMavenPublishingRepo() {
+    if (!project.version.endsWith('-SNAPSHOT')) {
+        return "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+    }
+    return "https://oss.sonatype.org/content/repositories/snapshots/"
 }
