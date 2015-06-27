@@ -13,7 +13,7 @@ scmVersion {
         prefix = project.name
     }
     createReleaseCommit true
-    //releaseCommitMessage { version, position -> }
+    releaseCommitMessage { version, position -> "[ci skip] release version: " + version}
 }
 
 group = "com.tealcube.minecraft.bukkit"
