@@ -5,7 +5,6 @@ plugins {
     id "signing"
 }
 
-
 sourceCompatibility = 1.7
 
 scmVersion {
