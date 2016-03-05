@@ -15,7 +15,8 @@ scmVersion {
 group = 'com.tealcubegames.minecraft.spigot'
 version = scmVersion.version
 
-apply from: 'publish-java.gradle'
+apply from: getGradleScriptsFile('src/main/resources/publish-java.gradle')
+apply from: getGradleScriptsFile('src/main/resources/license-header.gradle')
 
 repositories {
     mavenCentral()
@@ -46,17 +47,6 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-license {
-    header file('HEADER')
-    ignoreFailures false
-    strictCheck true
-    ext {
-        name = project.name
-        year = Calendar.getInstance().get(Calendar.YEAR)
-        author = 'Teal Cube Games'
-        url = 'http://tealcubegames.com/'
-    }
-    mapping {
-        java = 'SLASHSTAR_STYLE'
-    }
+def getGradleScriptsFile(String name) {
+    return "https://raw.githubusercontent.com/TealCube/gradle-scripts/master/$name"
 }
