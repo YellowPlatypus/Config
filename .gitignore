@@ -103,4 +103,5 @@ build/
 # Ignore Gradle GUI config
 gradle-app.setting
 
-
+# Don't ignore Gradle wrapper
+!gradle/wrapper/*
