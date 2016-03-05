@@ -1,6 +1,8 @@
-/**
- * The MIT License
- * Copyright (c) 2015 Teal Cube Games
+/*
+ * This file is part of config, licensed under the MIT License (MIT)
+ *
+ * Copyright (c) 2016 Teal Cube Games <http://tealcubegames.com/>
+ * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -9,16 +11,16 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package com.tealcube.minecraft.bukkit.config;
 
@@ -56,11 +58,14 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
      * {@link java.io.File} to check against, and an {@link VersionedConfiguration.VersionUpdateType}.
      *
+     * @deprecated
+     *
      * @param file         file to load/save from/to
      * @param separator    character to separate file sections on
      * @param checkAgainst file to check against
      * @param updateType   type of updating
      */
+    @Deprecated
     public VersionedSmartYamlConfiguration(File file, char separator, File checkAgainst,
                                            VersionUpdateType updateType) {
         super(file, separator);
@@ -87,11 +92,14 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
      * Instantiates a new VersionedIvoryYamlConfiguration with a selected {@link java.io.File} to load/save from/to, a
      * {@link java.io.InputStream} to check against, and an {@link VersionedConfiguration.VersionUpdateType}.
      *
+     * @deprecated
+     *
      * @param file         file to load/save from/to
      * @param separator    character to separate file sections on
      * @param checkAgainst resource to check against
      * @param updateType   type of updating
      */
+    @Deprecated
     public VersionedSmartYamlConfiguration(File file, char separator, InputStream checkAgainst,
                                            VersionUpdateType updateType) {
         super(file, separator);
