@@ -1,19 +1,10 @@
 plugins {
     id 'java'
     id 'com.github.hierynomus.license' version '0.12.1'
-    id 'pl.allegro.tech.build.axion-release' version '1.3.4'
-}
-
-scmVersion {
-    tag {
-        prefix = project.name
-    }
-    createReleaseCommit true
-    releaseCommitMessage { version, position -> "release version: $version"}
+    id 'net.researchgate.release' version '2.3.4'
 }
 
 group = 'com.tealcubegames.minecraft.spigot'
-version = scmVersion.version
 
 apply from: getGradleScriptsFile('src/main/resources/publish-java.gradle')
 apply from: getGradleScriptsFile('src/main/resources/license-header.gradle')
@@ -45,6 +36,10 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives javadocJar, sourcesJar
+}
+
+release {
+    failOnSnapshotDependencies = false
 }
 
 def getGradleScriptsFile(String name) {
