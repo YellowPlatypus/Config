@@ -22,6 +22,8 @@
  */
 package com.tealcube.minecraft.bukkit.config;
 
+import com.github.zafarkhaja.semver.Version;
+import com.google.common.io.Files;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -137,8 +139,9 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
      */
     @Override
     public boolean needsToUpdate() {
-        return getVersion() != null && getLocalVersion() != null && !getLocalVersion()
-                .equals(getVersion());
+        Version version = Version.valueOf(getVersion());
+        Version localVersion = Version.valueOf(getLocalVersion());
+        return localVersion.greaterThanOrEqualTo(version);
     }
 
     /**
@@ -152,22 +155,18 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
             return false;
         }
         File directory = getFile().getParentFile();
-        File saveTo = new File(directory, getFile().getName().replace(YAML_ENDING, YAML_ENDING + BACKUP_ENDING));
+        File backupLocation = new File(directory, getFile().getName().replace(YAML_ENDING, YAML_ENDING + BACKUP_ENDING));
         switch (updateType) {
             case BACKUP_NO_UPDATE:
                 try {
-                    if (getFile().exists()) {
-                        save(saveTo);
-                    }
+                    Files.copy(getFile(), backupLocation);
                 } catch (IOException e) {
                     return false;
                 }
                 return true;
             case BACKUP_AND_UPDATE:
                 try {
-                    if (getFile().exists()) {
-                        save(saveTo);
-                    }
+                    Files.copy(getFile(), backupLocation);
                 } catch (IOException e) {
                     return false;
                 }
@@ -184,9 +183,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
                 return true;
             case BACKUP_AND_NEW:
                 try {
-                    if (getFile().exists()) {
-                        save(saveTo);
-                    }
+                    Files.copy(getFile(), backupLocation);
                 } catch (IOException e) {
                     return false;
                 }
