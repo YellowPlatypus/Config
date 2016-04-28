@@ -141,7 +141,7 @@ public class VersionedSmartYamlConfiguration extends SmartYamlConfiguration impl
     public boolean needsToUpdate() {
         Version version = Version.valueOf(getVersion());
         Version localVersion = Version.valueOf(getLocalVersion());
-        return localVersion.greaterThanOrEqualTo(version);
+        return localVersion.greaterThan(version);
     }
 
     /**
