@@ -20,9 +20,9 @@
             <version>1.11_R1</version>
         </dependency>
         <dependency>
-            <groupId>com.github.zafarkhaja</groupId>
-            <artifactId>java-semver</artifactId>
-            <version>0.9.0</version>
+            <groupId>zafarkhaja</groupId>
+            <artifactId>SemVer</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <properties>
